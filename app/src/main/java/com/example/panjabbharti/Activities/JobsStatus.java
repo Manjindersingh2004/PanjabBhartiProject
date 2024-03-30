@@ -42,7 +42,6 @@ public class JobsStatus extends AppCompatActivity {
     ProgressBar progressBar;
     TextView no_data;
     ArrayList<JobStatus> dataset;
-
     JobStatusAdapter jobStatusAdapter;
     boolean isConnected;
     FirebaseFirestore firestore;

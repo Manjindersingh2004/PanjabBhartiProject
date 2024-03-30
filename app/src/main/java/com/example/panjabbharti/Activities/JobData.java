@@ -27,7 +27,7 @@ public class JobData extends AppCompatActivity {
     int dToEnd;
     Intent receiveData;
 
-    Button download,openWeb;
+    Button download,openWeb,finish;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +45,7 @@ public class JobData extends AppCompatActivity {
         daysToEnd=findViewById(R.id.daysToEnd);
         download=findViewById(R.id.download);
         openWeb=findViewById(R.id.openWeb);
+        finish=findViewById(R.id.finish);
 
 
         receiveData=getIntent();
@@ -55,8 +56,8 @@ public class JobData extends AppCompatActivity {
         webUrl=receiveData.getStringExtra(Keys.FORM_LINK);
 
         jobName.setText(jName);
-        start.setText(sDate);
-        end.setText(eDate);
+        start.setText("Start Date : "+sDate);
+        end.setText("End Date : "+eDate);
 
          dToEnd= (int)Duration.between(LocalDate.now().atStartOfDay(),LocalDate.parse(eDate).atStartOfDay()).toDays();
 
@@ -73,7 +74,9 @@ public class JobData extends AppCompatActivity {
         openWeb.setOnClickListener(v -> {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(webUrl)));
         });
-
+        finish.setOnClickListener(v -> {
+            finish();
+        });
 
     }
 }
