@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "39540954341",
+    "project_id": "panjab-bharti",
+    "storage_bucket": "panjab-bharti.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39540954341:android:61bae5eb998888bb53f00c",
+        "android_client_info": {
+          "package_name": "com.example.panjabbharti"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSn3p1eoa-tEdEOV7YzkR00BXMlFn_074"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
