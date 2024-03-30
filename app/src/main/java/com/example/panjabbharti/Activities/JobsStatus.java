@@ -9,10 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
@@ -26,8 +24,6 @@ import com.example.panjabbharti.Classes.DataModal;
 import com.example.panjabbharti.Classes.JobStatus;
 import com.example.panjabbharti.Constants.Keys;
 import com.example.panjabbharti.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -36,6 +32,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class JobsStatus extends AppCompatActivity {
     RecyclerView jobStatusRecycler;
@@ -46,9 +43,7 @@ public class JobsStatus extends AppCompatActivity {
     boolean isConnected;
     FirebaseFirestore firestore;
     Intent intent;
-    private String collection_name;
     private String qualification_selected;
-    private String dob;
     private boolean pQualified;
     private int age;
     private DataModal dataModal;
@@ -70,9 +65,9 @@ public class JobsStatus extends AppCompatActivity {
         no_data=findViewById(R.id.no_data);
         firestore=FirebaseFirestore.getInstance();
         dataset=new ArrayList<>();
-        collection_name=intent.getStringExtra(Keys.DEPARTMENT);
+        String collection_name = intent.getStringExtra(Keys.DEPARTMENT);
         qualification_selected=intent.getStringExtra(Keys.QUALIFICATION);
-        dob=intent.getStringExtra(Keys.DATE_OF_BIRTH);
+        String dob = intent.getStringExtra(Keys.DATE_OF_BIRTH);
         pQualified=intent.getBooleanExtra(Keys.PANJABI_QUALIFIED,false);
 
         progressBar.setVisibility(View.VISIBLE);
@@ -85,58 +80,56 @@ public class JobsStatus extends AppCompatActivity {
         ConnectivityManager connectivityManager = getSystemService(ConnectivityManager.class);
         Network network = connectivityManager.getActiveNetwork();
         if (network !=null) {
-            isConnected = connectivityManager.getNetworkCapabilities(network).hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+            isConnected = Objects.requireNonNull(connectivityManager.getNetworkCapabilities(network)).hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
         }
         //Check if internet is available or not
         if (isConnected) {
-            firestore.collection(collection_name.trim()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot result = task.getResult();
-                        for (QueryDocumentSnapshot iterator : result) {
-                            dataModal = iterator.toObject(DataModal.class);
-                            Log.d("MYTAG", String.valueOf(age));
-                            if (age <= dataModal.getAgeMax() && age >= dataModal.getAgeMin()) {
-                                for (String qualification : dataModal.getQualification().values()) {
-                                    Log.d("MYTAG", String.valueOf(qualification_selected.trim())+" "+qualification);
+            assert collection_name != null;
+            firestore.collection(collection_name.trim()).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    QuerySnapshot result = task.getResult();
+                    for (QueryDocumentSnapshot iterator : result) {
+                        dataModal = iterator.toObject(DataModal.class);
+                        Log.d("MYTAG", String.valueOf(age));
+                        if (age <= dataModal.getAgeMax() && age >= dataModal.getAgeMin()) {
+                            for (String qualification : dataModal.getQualification().values()) {
+                                Log.d("MYTAG", qualification_selected.trim() +" "+qualification);
 
-                                    if (qualification.equals(qualification_selected.trim())) {
-                                        if (pQualified == dataModal.isPanjabiRequired()) {
-                                            Log.d("MYTAG", String.valueOf(dataModal.isPanjabiRequired()));
-   Log.d("MYTAG", String.valueOf(Duration.between(dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atStartOfDay(), LocalDate.now().atStartOfDay()).toDays()));
-                                            int temp_days=(int)Duration.between(dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atStartOfDay(), LocalDate.now().atStartOfDay()).toDays();
-                                            if ( temp_days< 0) {
-                                                temp_days *= -1;
-                                            }
-                                                if (temp_days>0) {
-                                                    //  Populating Dataset with values and accordingly show other views
-                                                    dataset.add(new JobStatus(dataModal.getStartDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),iterator.getId(),dataModal.getNotificationURL(),dataModal.getFormURL()));
-                                                    Log.d("MYTAG","Data Added");
-                                                }
+                                if (qualification.equals(qualification_selected.trim())) {
+                                    if (pQualified == dataModal.isPanjabiRequired()) {
+                                        Log.d("MYTAG", String.valueOf(dataModal.isPanjabiRequired()));
+Log.d("MYTAG", String.valueOf(Duration.between(dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atStartOfDay(), LocalDate.now().atStartOfDay()).toDays()));
+                                        int temp_days=(int)Duration.between(dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atStartOfDay(), LocalDate.now().atStartOfDay()).toDays();
+                                        if ( temp_days< 0) {
+                                            temp_days *= -1;
+                                        }
+                                            if (temp_days>0) {
                                                 //  Populating Dataset with values and accordingly show other views
-//                                                dataset.add(new JobStatus(dataModal.getStartDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),iterator.getId()));
+                                                dataset.add(new JobStatus(dataModal.getStartDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),iterator.getId(),dataModal.getNotificationURL(),dataModal.getFormURL()));
+                                                Log.d("MYTAG","Data Added");
                                             }
+                                            //  Populating Dataset with values and accordingly show other views
+//                                                dataset.add(new JobStatus(dataModal.getStartDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),iterator.getId()));
                                         }
                                     }
                                 }
                             }
-                        Log.d("MYTAG", String.valueOf(dataset.size()));
                         }
-                    if (!dataset.isEmpty()) {
-                        Log.d("MYTAG","Not Empty");
-                        progressBar.setVisibility(View.INVISIBLE);
-                        jobStatusAdapter = new JobStatusAdapter(dataset,JobsStatus.this);
-                        jobStatusRecycler.setLayoutManager(new LinearLayoutManager(JobsStatus.this,LinearLayoutManager.VERTICAL,false));
-                        jobStatusRecycler.setAdapter(jobStatusAdapter);
-                    }else {
-                        Log.d("MYTAG","Empty");
+                    Log.d("MYTAG", String.valueOf(dataset.size()));
+                    }
+                if (!dataset.isEmpty()) {
+                    Log.d("MYTAG","Not Empty");
+                    progressBar.setVisibility(View.INVISIBLE);
+                    jobStatusAdapter = new JobStatusAdapter(dataset,JobsStatus.this);
+                    jobStatusRecycler.setLayoutManager(new LinearLayoutManager(JobsStatus.this,LinearLayoutManager.VERTICAL,false));
+                    jobStatusRecycler.setAdapter(jobStatusAdapter);
+                }else {
+                    Log.d("MYTAG","Empty");
 
-                        no_data.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.INVISIBLE);
-                        no_data.setText(R.string.no_jobs);
-                    }
-                    }
+                    no_data.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
+                    no_data.setText(R.string.no_jobs);
+                }
                 });
 
 

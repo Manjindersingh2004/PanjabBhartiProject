@@ -49,7 +49,6 @@ public class FilterActivity extends AppCompatActivity {
         });
         Intent intent = getIntent();
         selectedDept = intent.getStringExtra(Keys.DEPARTMENT);
-        Toast.makeText(this, selectedDept, Toast.LENGTH_SHORT).show();
         QualificationFilterAdapter.selectedQualification="";
         startService(new Intent(getApplicationContext(), QualiicationFetch.class).putExtra(Keys.DEPARTMENT,selectedDept));
         findIds();

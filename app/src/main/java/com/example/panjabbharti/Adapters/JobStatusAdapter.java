@@ -56,7 +56,7 @@ public class JobStatusAdapter extends RecyclerView.Adapter<JobStatusAdapter.View
         return dataset.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView job_title = itemView.findViewById(R.id.job_title);
         private TextView startDate = itemView.findViewById(R.id.startDate);
         private TextView endDate = itemView.findViewById(R.id.endDate);

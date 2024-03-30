@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.panjabbharti.Constants.Keys;
 import com.example.panjabbharti.R;
 
+import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 
@@ -56,27 +57,23 @@ public class JobData extends AppCompatActivity {
         webUrl=receiveData.getStringExtra(Keys.FORM_LINK);
 
         jobName.setText(jName);
-        start.setText("Start Date : "+sDate);
-        end.setText("End Date : "+eDate);
+        start.setText(MessageFormat.format("Start Date : {0}", sDate));
+        end.setText(MessageFormat.format("End Date : {0}", eDate));
 
          dToEnd= (int)Duration.between(LocalDate.now().atStartOfDay(),LocalDate.parse(eDate).atStartOfDay()).toDays();
 
-        daysToEnd.setText(dToEnd+" Days left");
+        daysToEnd.setText(MessageFormat.format("{0} Days left", dToEnd));
 
         download.setOnClickListener(v -> {
             DownloadManager downloadManager = getSystemService(DownloadManager.class);
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(notificationUrl)) ;
             request.setTitle("Downloading PDF").setDescription("Downloading Official Notification").setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"NotificationPDF.pdf").setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-
             downloadManager.enqueue(request);
+            Toast.makeText(this, "downloading...", Toast.LENGTH_LONG).show();
         });
 
-        openWeb.setOnClickListener(v -> {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(webUrl)));
-        });
-        finish.setOnClickListener(v -> {
-            finish();
-        });
+        openWeb.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(webUrl))));
+        finish.setOnClickListener(v -> finish());
 
     }
 }
