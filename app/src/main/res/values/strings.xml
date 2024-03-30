@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Panjab Bharti</string>
+    <string name="no_such_department_exists">No Such Department Exists</string>
 </resources>
