@@ -52,7 +52,7 @@ public class Department_Activity extends AppCompatActivity {
         });
         departmentModelArrayList= new ArrayList<Department_Model>();
         departmentModelArrayList.add(new Department_Model("Punjab Subordinate Service Selection Board",R.drawable.revenue));
-        departmentModelArrayList.add(new Department_Model("Education",R.drawable.education));
+        //departmentModelArrayList.add(new Department_Model("Education",R.drawable.education));
         departmentModelArrayList.add(new Department_Model("Punjab Police",R.drawable.police));
         departmentModelArrayList.add(new Department_Model("Punjab State Power Corporation Limited",R.drawable.electricity));
         departmentModelArrayList.add(new Department_Model("Baba Farid University",R.drawable.school));
