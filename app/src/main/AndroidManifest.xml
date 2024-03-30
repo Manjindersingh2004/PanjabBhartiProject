@@ -28,5 +28,6 @@
             android:name=".Activities.Department_Activity"
             android:exported="false">
         </activity>
+        <service android:name=".Services.QualiicationFetch"/>
     </application>
 </manifest>
