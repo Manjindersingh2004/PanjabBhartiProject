@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Panjab Bharti</string>
+    <string name="welcome_to_panjab_bharti">Welcome to Panjab Bharti</string>
+    <string name="todo">TODO</string>
 </resources>
