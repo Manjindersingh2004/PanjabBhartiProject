@@ -1,4 +1,4 @@
-package com.example.panjabbharti.Activities;
+package com.example.panjabbharti.Classes;
 public class Department_Model {
     public String department_name;
     public int course_image;

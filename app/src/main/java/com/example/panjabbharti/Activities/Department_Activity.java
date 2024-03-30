@@ -1,10 +1,8 @@
 package com.example.panjabbharti.Activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +13,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.panjabbharti.Adapters.Adapter_Departments;
+import com.example.panjabbharti.Classes.Department_Model;
 import com.example.panjabbharti.R;
 
 import java.util.ArrayList;
@@ -52,9 +52,9 @@ public class Department_Activity extends AppCompatActivity {
         });
         departmentModelArrayList= new ArrayList<Department_Model>();
         departmentModelArrayList.add(new Department_Model("Punjab Subordinate Service Selection Board",R.drawable.revenue));
+        departmentModelArrayList.add(new Department_Model("Education",R.drawable.education));
         departmentModelArrayList.add(new Department_Model("Punjab Police",R.drawable.police));
         departmentModelArrayList.add(new Department_Model("Punjab State Power Corporation Limited",R.drawable.electricity));
-        departmentModelArrayList.add(new Department_Model("Education",R.drawable.education));
         departmentModelArrayList.add(new Department_Model("Baba Farid University",R.drawable.school));
         adapterDepartments = new Adapter_Departments(this,departmentModelArrayList);
         GridLayoutManager gridLayoutManager =new GridLayoutManager(this,2,GridLayoutManager.VERTICAL,false);

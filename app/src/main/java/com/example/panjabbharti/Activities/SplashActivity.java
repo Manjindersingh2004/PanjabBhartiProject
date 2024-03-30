@@ -28,16 +28,16 @@ public class SplashActivity extends AppCompatActivity {
         Animation blink1=AnimationUtils.loadAnimation(this, R.anim.blink);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.scale_anim);
         ImageView imageView = findViewById(R.id.imageView);
-        imageView.startAnimation(animation);
+        //imageView.startAnimation(animation);
 //        TextView textView =findViewById(R.id.textView);
 //        textView.startAnimation(move1);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                startActivity(new Intent(SplashActivity.this,Department_Activity.class));
                 finish();
             }
-        },3000);
+        },1500);
 
 
 
