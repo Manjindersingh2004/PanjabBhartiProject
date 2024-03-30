@@ -22,6 +22,8 @@ import com.example.panjabbharti.Constants.Keys;
 import com.example.panjabbharti.R;
 import com.example.panjabbharti.Services.QualiicationFetch;
 
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -72,12 +74,21 @@ public class FilterActivity extends AppCompatActivity {
                 Toast.makeText(this, "Please Select Dob", Toast.LENGTH_SHORT).show();
             }
             else{
-                Intent intent = new Intent(FilterActivity.this,JobsStatus.class);
-                intent.putExtra(Keys.DEPARTMENT,selectedDept);
-                intent.putExtra(Keys.QUALIFICATION,QualificationFilterAdapter.selectedQualification);
-                intent.putExtra(Keys.DATE_OF_BIRTH,selectedDob);
-                intent.putExtra(Keys.PANJABI_QUALIFIED,panjabiQualified);
-                startActivity(intent);
+                LocalDate dateOfBirth = LocalDate.parse(selectedDob);
+                double temp1=(double) (Duration.between(dateOfBirth.atStartOfDay(), LocalDate.now().atStartOfDay()).toDays());
+                double temp = Math.ceil( temp1/(double) 365);
+                int age = (int)temp;
+                
+                if(age>=18) {
+                    Intent intent = new Intent(FilterActivity.this, JobsStatus.class);
+                    intent.putExtra(Keys.DEPARTMENT, selectedDept);
+                    intent.putExtra(Keys.QUALIFICATION, QualificationFilterAdapter.selectedQualification);
+                    intent.putExtra(Keys.DATE_OF_BIRTH, selectedDob);
+                    intent.putExtra(Keys.PANJABI_QUALIFIED, panjabiQualified);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(this, "Minimum Age to apply is 18 years", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
