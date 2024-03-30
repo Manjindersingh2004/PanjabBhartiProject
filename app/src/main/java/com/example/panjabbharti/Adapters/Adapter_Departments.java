@@ -1,4 +1,4 @@
-package com.example.panjabbharti.Activities;
+package com.example.panjabbharti.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,12 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.panjabbharti.Activities.FilterActivity;
+import com.example.panjabbharti.Classes.Department_Model;
 import com.example.panjabbharti.R;
 
 import java.util.ArrayList;
@@ -45,9 +46,9 @@ public class Adapter_Departments extends RecyclerView.Adapter<Adapter_Department
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context,FilterActivity.class);
-//                intent.putExtra("dept",departmentModel.getDepartment_name());
-//                context.startActivity(intent);   
+                Intent intent = new Intent(context, FilterActivity.class);
+                intent.putExtra("dept",departmentModel.getDepartment_name());
+                context.startActivity(intent);
             }
         });
     }

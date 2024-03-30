@@ -1,6 +1,7 @@
 package com.example.panjabbharti.Activities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ public class FilterActivity extends AppCompatActivity {
     ArrayList<String> qualificationList=new ArrayList<>();
     String selectedDob="";
     boolean panjabiQualified=true;
+    String SelectDept="";
     QualificationFilterAdapter adapter;
     String[] months={" January ", " February ", " March ", " April ", " May ", " June ", " July ", " August ", " September ", " October ", " November ", " December "};
     @Override
@@ -43,6 +45,8 @@ public class FilterActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Intent intent = getIntent();
+        SelectDept = intent.getStringExtra("dept");
         QualificationFilterAdapter.selectedQualification="";
         findIds();
         putDataInArraylist();
@@ -66,7 +70,8 @@ public class FilterActivity extends AppCompatActivity {
                 Toast.makeText(this, "Please Select Dob", Toast.LENGTH_SHORT).show();
             }
             else{
-                Toast.makeText(this, QualificationFilterAdapter.selectedQualification+" "+selectedDob+" "+panjabiQualified, Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(FilterActivity.this,MainActivity.class);
+//                startActivity(intent);
             }
         });
 

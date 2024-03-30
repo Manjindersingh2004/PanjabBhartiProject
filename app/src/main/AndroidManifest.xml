@@ -12,10 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PanjabBharti"
         tools:targetApi="31">
-
-        <activity
-            android:name=".Activities.MainActivity"
-            android:exported="false" />
         <activity
             android:name=".Activities.SplashActivity"
             android:exported="true">
