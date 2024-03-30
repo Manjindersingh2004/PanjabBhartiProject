@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Panjab Bharti</string>
+    <string name="no_such_department_exists">No Such Department Exists</string>
     <string name="welcome_to_panjab_bharti">Welcome to Panjab Bharti</string>
     <string name="todo">TODO</string>
     <string name="select_dob">select dob</string>
