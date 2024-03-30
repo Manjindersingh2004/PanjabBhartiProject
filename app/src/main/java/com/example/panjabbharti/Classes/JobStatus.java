@@ -12,6 +12,14 @@ public class JobStatus {
         this.job_title = job_title;
     }
 
+    public JobStatus(LocalDate startDate, LocalDate endDate, String job_title, String notificationURL, String formURL) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.job_title = job_title;
+        this.notificationURL = notificationURL;
+        this.formURL = formURL;
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }

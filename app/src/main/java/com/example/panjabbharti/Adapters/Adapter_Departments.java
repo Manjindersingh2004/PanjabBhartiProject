@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.panjabbharti.Activities.FilterActivity;
 import com.example.panjabbharti.Classes.Department_Model;
+import com.example.panjabbharti.Constants.Keys;
 import com.example.panjabbharti.R;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class Adapter_Departments extends RecyclerView.Adapter<Adapter_Department
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, FilterActivity.class);
-                intent.putExtra("dept",departmentModel.getDepartment_name());
+                intent.putExtra(Keys.DEPARTMENT,departmentModel.getDepartment_name());
                 context.startActivity(intent);
             }
         });

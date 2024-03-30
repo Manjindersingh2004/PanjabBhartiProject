@@ -65,7 +65,7 @@ public class JobData extends AppCompatActivity {
         download.setOnClickListener(v -> {
             DownloadManager downloadManager = getSystemService(DownloadManager.class);
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(notificationUrl)) ;
-            request.setTitle("Downloading PDF").setDescription("Downloading Official Notification").setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"Notification.pdf").setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.setTitle("Downloading PDF").setDescription("Downloading Official Notification").setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"NotificationPDF.pdf").setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
             downloadManager.enqueue(request);
         });

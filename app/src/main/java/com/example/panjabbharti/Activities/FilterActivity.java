@@ -18,7 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.panjabbharti.Adapters.QualificationFilterAdapter;
+import com.example.panjabbharti.Constants.Keys;
 import com.example.panjabbharti.R;
+import com.example.panjabbharti.Services.QualiicationFetch;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,12 +29,12 @@ public class FilterActivity extends AppCompatActivity {
 
     AppCompatButton back,dobBtn,panjabiYes,panjabiNo;
     TextView applyFilter;
-    RecyclerView recyclerView;
+    public static RecyclerView recyclerView;
 
-    ArrayList<String> qualificationList=new ArrayList<>();
+    public static ArrayList<String> qualificationList=new ArrayList<>();
     String selectedDob="";
     boolean panjabiQualified=true;
-    String SelectDept="";
+    String selectedDept="";
     QualificationFilterAdapter adapter;
     String[] months={" January ", " February ", " March ", " April ", " May ", " June ", " July ", " August ", " September ", " October ", " November ", " December "};
     @Override
@@ -46,8 +48,10 @@ public class FilterActivity extends AppCompatActivity {
             return insets;
         });
         Intent intent = getIntent();
-        SelectDept = intent.getStringExtra("dept");
+        selectedDept = intent.getStringExtra(Keys.DEPARTMENT);
+        Toast.makeText(this, selectedDept, Toast.LENGTH_SHORT).show();
         QualificationFilterAdapter.selectedQualification="";
+        startService(new Intent(getApplicationContext(), QualiicationFetch.class).putExtra(Keys.DEPARTMENT,selectedDept));
         findIds();
         putDataInArraylist();
         setPanjabiQualifiedUi(1);
@@ -70,8 +74,12 @@ public class FilterActivity extends AppCompatActivity {
                 Toast.makeText(this, "Please Select Dob", Toast.LENGTH_SHORT).show();
             }
             else{
-//                Intent intent = new Intent(FilterActivity.this,MainActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(FilterActivity.this,JobsStatus.class);
+                intent.putExtra(Keys.DEPARTMENT,selectedDept);
+                intent.putExtra(Keys.QUALIFICATION,QualificationFilterAdapter.selectedQualification);
+                intent.putExtra(Keys.DATE_OF_BIRTH,selectedDob);
+                intent.putExtra(Keys.PANJABI_QUALIFIED,panjabiQualified);
+                startActivity(intent);
             }
         });
 

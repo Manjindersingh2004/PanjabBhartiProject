@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -62,6 +63,7 @@ public class JobsStatus extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        intent=getIntent();
         jobStatusRecycler = findViewById(R.id.jobStatusRecycler);
         progressBar=findViewById(R.id.progressBar);
         no_data=findViewById(R.id.no_data);
@@ -75,7 +77,8 @@ public class JobsStatus extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         //Converting dob to age
         LocalDate dateOfBirth = LocalDate.parse(dob);
-        double temp = Math.ceil((double) (Duration.between(dateOfBirth, LocalDate.now()).toDays()) /365);
+        double temp1=(double) (Duration.between(dateOfBirth.atStartOfDay(), LocalDate.now().atStartOfDay()).toDays());
+        double temp = Math.ceil( temp1/(double) 365);
         age = (int)temp;
         ConnectivityManager connectivityManager = getSystemService(ConnectivityManager.class);
         Network network = connectivityManager.getActiveNetwork();
@@ -91,35 +94,56 @@ public class JobsStatus extends AppCompatActivity {
                         QuerySnapshot result = task.getResult();
                         for (QueryDocumentSnapshot iterator : result) {
                             dataModal = iterator.toObject(DataModal.class);
+                            Log.d("MYTAG", String.valueOf(age));
                             if (age <= dataModal.getAgeMax() && age >= dataModal.getAgeMin()) {
                                 for (String qualification : dataModal.getQualification().values()) {
+                                    Log.d("MYTAG", String.valueOf(qualification_selected.trim())+" "+qualification);
+
                                     if (qualification.equals(qualification_selected.trim())) {
                                         if (pQualified == dataModal.isPanjabiRequired()) {
-                                            if (Duration.between(dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDate.now()).toDays() > 0) {
+                                            Log.d("MYTAG", String.valueOf(dataModal.isPanjabiRequired()));
+   Log.d("MYTAG", String.valueOf(Duration.between(dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atStartOfDay(), LocalDate.now().atStartOfDay()).toDays()));
+                                            int temp_days=(int)Duration.between(dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atStartOfDay(), LocalDate.now().atStartOfDay()).toDays();
+                                            if ( temp_days< 0) {
+                                                temp_days *= -1;
+                                            }
+                                                if (temp_days>0) {
+                                                    //  Populating Dataset with values and accordingly show other views
+                                                    dataset.add(new JobStatus(dataModal.getStartDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),iterator.getId(),dataModal.getNotificationURL(),dataModal.getFormURL()));
+                                                    Log.d("MYTAG","Data Added");
+                                                }
                                                 //  Populating Dataset with values and accordingly show other views
-                                                dataset.add(new JobStatus(dataModal.getStartDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),iterator.getId()));
+//                                                dataset.add(new JobStatus(dataModal.getStartDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),iterator.getId()));
                                             }
                                         }
                                     }
                                 }
                             }
+                        Log.d("MYTAG", String.valueOf(dataset.size()));
                         }
+                    if (!dataset.isEmpty()) {
+                        Log.d("MYTAG","Not Empty");
+                        progressBar.setVisibility(View.INVISIBLE);
+                        jobStatusAdapter = new JobStatusAdapter(dataset,JobsStatus.this);
+                        jobStatusRecycler.setLayoutManager(new LinearLayoutManager(JobsStatus.this,LinearLayoutManager.VERTICAL,false));
+                        jobStatusRecycler.setAdapter(jobStatusAdapter);
+                    }else {
+                        Log.d("MYTAG","Empty");
+
+                        no_data.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.INVISIBLE);
+                        no_data.setText(R.string.no_jobs);
                     }
-                }
-            });
-            if (!dataset.isEmpty()) {
-                progressBar.setVisibility(View.INVISIBLE);
-                jobStatusAdapter = new JobStatusAdapter(dataset,JobsStatus.this);
-                jobStatusRecycler.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-                jobStatusRecycler.setAdapter(jobStatusAdapter);
-            }else {
-                no_data.setVisibility(View.VISIBLE);
-                no_data.setText(R.string.no_jobs);
-            }
+                    }
+                });
+
+
 
         }else {
             no_data.setVisibility(View.VISIBLE);
             no_data.setText(R.string.no_connection);
+            progressBar.setVisibility(View.INVISIBLE);
+
         }
 
     }
