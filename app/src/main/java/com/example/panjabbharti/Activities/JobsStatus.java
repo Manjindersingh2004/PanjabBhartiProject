@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -53,6 +54,7 @@ public class JobsStatus extends AppCompatActivity {
     private int age;
     private DataModal dataModal;
 
+    AppCompatButton back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +77,7 @@ public class JobsStatus extends AppCompatActivity {
         pQualified=intent.getBooleanExtra(Keys.PANJABI_QUALIFIED,false);
 
         progressBar.setVisibility(View.VISIBLE);
+        back=findViewById(R.id.backBtn_job);
         //Converting dob to age
         LocalDate dateOfBirth = LocalDate.parse(dob);
         double temp1=(double) (Duration.between(dateOfBirth.atStartOfDay(), LocalDate.now().atStartOfDay()).toDays());
@@ -145,6 +148,8 @@ public class JobsStatus extends AppCompatActivity {
             progressBar.setVisibility(View.INVISIBLE);
 
         }
+
+        back.setOnClickListener(v -> finish());
 
     }
 }

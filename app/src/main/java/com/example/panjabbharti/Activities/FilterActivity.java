@@ -53,7 +53,6 @@ public class FilterActivity extends AppCompatActivity {
         QualificationFilterAdapter.selectedQualification="";
         startService(new Intent(getApplicationContext(), QualiicationFetch.class).putExtra(Keys.DEPARTMENT,selectedDept));
         findIds();
-        putDataInArraylist();
         setPanjabiQualifiedUi(1);
         clickEvents();
 
@@ -143,15 +142,6 @@ public class FilterActivity extends AppCompatActivity {
             panjabiNo.setTextColor(ContextCompat.getColor(this,R.color.white));
         }
     }
-
-    private void putDataInArraylist() {
-        qualificationList.add("B.tech");
-        qualificationList.add("M.tech");
-        qualificationList.add("10th");
-        qualificationList.add("12th");
-        qualificationList.add("BA");
-    }
-
     private void findIds() {
         back=findViewById(R.id.back_btn_filter);
         applyFilter=findViewById(R.id.apply_btn_filter);

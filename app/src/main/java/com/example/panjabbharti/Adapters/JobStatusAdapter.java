@@ -15,6 +15,7 @@ import com.example.panjabbharti.Classes.JobStatus;
 import com.example.panjabbharti.Constants.Keys;
 import com.example.panjabbharti.R;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 public class JobStatusAdapter extends RecyclerView.Adapter<JobStatusAdapter.ViewHolder> {
@@ -36,8 +37,8 @@ public class JobStatusAdapter extends RecyclerView.Adapter<JobStatusAdapter.View
     @Override
     public void onBindViewHolder(@NonNull JobStatusAdapter.ViewHolder holder, int position) {
         holder.getJob_title().setText(dataset.get(position).getJob_title());
-        holder.getStartDate().setText(dataset.get(position).getStartDate().toString());
-        holder.getEndDate().setText(dataset.get(position).getEndDate().toString());
+        holder.getStartDate().setText(MessageFormat.format("Start Date: {0}", dataset.get(position).getStartDate().toString()));
+        holder.getEndDate().setText(MessageFormat.format("Last Date: {0}", dataset.get(position).getEndDate().toString()));
         holder.itemView.setOnClickListener(v -> {
             Intent i = new Intent(context, JobData.class);
             i.putExtra(Keys.JOB_NAME,dataset.get(position).getJob_title());
