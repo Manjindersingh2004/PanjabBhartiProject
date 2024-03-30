@@ -61,7 +61,9 @@ public class JobData extends AppCompatActivity {
         end.setText(MessageFormat.format("End Date : {0}", eDate));
 
          dToEnd= (int)Duration.between(LocalDate.now().atStartOfDay(),LocalDate.parse(eDate).atStartOfDay()).toDays();
-
+         if (dToEnd<0){
+             dToEnd*=-1;
+         }
         daysToEnd.setText(MessageFormat.format("{0} Days left", dToEnd));
 
         download.setOnClickListener(v -> {
