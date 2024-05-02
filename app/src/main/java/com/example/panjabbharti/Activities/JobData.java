@@ -1,8 +1,11 @@
 package com.example.panjabbharti.Activities;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.widget.Button;
@@ -64,14 +67,27 @@ public class JobData extends AppCompatActivity {
          if (dToEnd<0){
              dToEnd*=-1;
          }
-        daysToEnd.setText(MessageFormat.format("{0} Days left", dToEnd));
+        daysToEnd.setText(MessageFormat.format("{0} Days left to apply ", dToEnd));
 
         download.setOnClickListener(v -> {
-            DownloadManager downloadManager = getSystemService(DownloadManager.class);
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(notificationUrl)) ;
-            request.setTitle("Downloading PDF").setDescription("Downloading Official Notification").setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"NotificationPDF.pdf").setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            downloadManager.enqueue(request);
-            Toast.makeText(this, "downloading...", Toast.LENGTH_LONG).show();
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+                if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Storage Permission Required", Toast.LENGTH_SHORT).show();
+                }else {
+                    DownloadManager downloadManager = getSystemService(DownloadManager.class);
+                    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(notificationUrl));
+                    request.setTitle("Downloading PDF").setDescription("Downloading Official Notification").setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "NotificationPDF.pdf").setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                    downloadManager.enqueue(request);
+                    Toast.makeText(this, "downloading...", Toast.LENGTH_LONG).show();
+                }
+            }
+            if (Build.VERSION.SDK_INT>Build.VERSION_CODES.S_V2) {
+                DownloadManager downloadManager = getSystemService(DownloadManager.class);
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(notificationUrl));
+                request.setTitle("Downloading PDF").setDescription("Downloading Official Notification").setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "NotificationPDF.pdf").setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                downloadManager.enqueue(request);
+                Toast.makeText(this, "downloading...", Toast.LENGTH_LONG).show();
+            }
         });
 
         openWeb.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(webUrl))));

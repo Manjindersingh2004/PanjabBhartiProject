@@ -85,6 +85,7 @@ public class JobsStatus extends AppCompatActivity {
         //Check if internet is available or not
         if (isConnected) {
             assert collection_name != null;
+
             firestore.collection(collection_name.trim()).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     QuerySnapshot result = task.getResult();
@@ -99,10 +100,11 @@ public class JobsStatus extends AppCompatActivity {
                                     if (pQualified == dataModal.isPanjabiRequired()) {
                                         Log.d("MYTAG", String.valueOf(dataModal.isPanjabiRequired()));
 Log.d("MYTAG", String.valueOf(Duration.between(dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atStartOfDay(), LocalDate.now().atStartOfDay()).toDays()));
-                                        int temp_days=(int)Duration.between(dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atStartOfDay(), LocalDate.now().atStartOfDay()).toDays();
-                                        if ( temp_days< 0) {
-                                            temp_days *= -1;
-                                        }
+                                        int temp_days=(int)Duration.between( LocalDate.now().atStartOfDay(),dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atStartOfDay()).toDays();
+                                        Log.d("MYTAG","Days:-  "+temp_days);
+//                                        if ( temp_days< 0) {
+//                                            temp_days *= -1;
+//                                        }
                                             if (temp_days>0) {
                                                 //  Populating Dataset with values and accordingly show other views
                                                 dataset.add(new JobStatus(dataModal.getStartDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),dataModal.getEndDate().toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),iterator.getId(),dataModal.getNotificationURL(),dataModal.getFormURL()));
